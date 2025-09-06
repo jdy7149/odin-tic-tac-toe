@@ -10,17 +10,27 @@ function createGameboard() {
         }
     }
 
-    const printBoard = console.log(board);
+    const printBoard = () => console.log(board);
 
     const getBoard = () => board;
 
     const placeToken = (row, column, token) => {
+        if (row < 0 || row >= board.length || column < 0 || column >= board[0].length) {
+            console.log('Invalid position');
+            return false;
+        }
+        
+        if (board[row][column]) return false;
 
+        board[row][column] = token;
+        return true;
     }
 
-
-
-    return {printBoard, getBoard};
+    return {
+        printBoard,
+        getBoard,
+        placeToken
+    };
 }
 
 function createCell() {
@@ -33,7 +43,7 @@ function createCell() {
     return {
         addToken,
         getValue
-    }
+    };
 }
 
 function createUser(name, token) {
@@ -59,14 +69,8 @@ function createGameController(name1 = 'Player One', name2 = 'Player Two') {
     const board = createGameboard();
     
     const players = [
-        {
-            name: name1,
-            token: 'O'
-        },
-        {
-            name: name2,
-            token: 'X'
-        }
+        createUser(name1, 'O'),
+        createUser(name2, 'X')
     ];
 
     let activePlayer = players[0];
