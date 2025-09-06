@@ -10,7 +10,7 @@ function createGameboard() {
         }
     }
 
-    const printBoard = () => console.log(board);
+    const printBoard = () => console.log(board.map(row => row.map(cell => cell.getValue())));
 
     const getBoard = () => board;
 
@@ -20,9 +20,12 @@ function createGameboard() {
             return false;
         }
         
-        if (board[row][column]) return false;
+        if (board[row][column].getValue()) {
+            console.log('Already placed.');
+            return false;
+        }
 
-        board[row][column] = token;
+        board[row][column].addToken(token);
         return true;
     }
 
@@ -66,14 +69,16 @@ function createUser(name, token) {
 } 
 
 function createGameController(name1 = 'Player One', name2 = 'Player Two') {
-    const board = createGameboard();
-    
+    const gameboard = createGameboard();
+
     const players = [
         createUser(name1, 'O'),
         createUser(name2, 'X')
     ];
 
     let activePlayer = players[0];
+
+    const getBoard = () => gameboard;
 
     const switchPlayerTurn = () => {
         activePlayer = players[0] ? players[1] : players[0];
@@ -82,8 +87,14 @@ function createGameController(name1 = 'Player One', name2 = 'Player Two') {
     const getActivePlayer = () => activePlayer;
 
     const getNewRoundText = () => {
-        board.printBoard();
+        gameboard.printBoard();
         return `${activePlayer.name}'s turn.`;
     }
 
+    return {
+        getBoard,
+        switchPlayerTurn,
+        getActivePlayer,
+        getNewRoundText
+    };
 }
