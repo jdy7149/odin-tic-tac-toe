@@ -29,6 +29,17 @@ function createGameboard() {
         return true;
     }
 
+    const isCheckmate = (row, column, token) => {
+        const checkHorizontal = board[row].every(cell => cell.getValue() === token);
+
+        const checkVertical = board.reduce((columnCells, _, i) => {
+            columnCells.push(board[i][column]);
+            return columnCells;
+        }, []).every(cell => cell.getValue() === token);
+        
+        const checkDiagonal = null;
+    }
+
     return {
         printBoard,
         getBoard,
@@ -89,7 +100,13 @@ function createGameController(name1 = 'Player One', name2 = 'Player Two') {
     const getNewRoundText = () => {
         gameboard.printBoard();
         return `${activePlayer.name}'s turn.`;
-    }
+    };
+
+    const playRound = (row, column) => {
+        gameboard.placeToken(row, column, activePlayer.getToken());
+
+
+    };
 
     return {
         getBoard,
