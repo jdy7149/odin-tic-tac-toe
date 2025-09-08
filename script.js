@@ -29,21 +29,28 @@ function createGameboard() {
         return true;
     }
 
-    const isCheckmate = (row, column, token) => {
+    const checkWin = (row, column, token) => {
         const checkHorizontal = board[row].every(cell => cell.getValue() === token);
+        if (checkHorizontal)
+            return true;
 
-        const checkVertical = board.reduce((columnCells, _, i) => {
-            columnCells.push(board[i][column]);
-            return columnCells;
-        }, []).every(cell => cell.getValue() === token);
+        const checkVertical = board.every(r => r[column].getValue() === token);
+        if (checkVertical)
+            return true;
         
-        const checkDiagonal = null;
-    }
+        const checkDiagonal = board.every((r, i) => r[i].getValue() === token) || 
+            board.every((r, i) => r[r.length - 1 - i].getValue() === token);
+        if (checkDiagonal)
+             return true;
+
+        return false;
+    };
 
     return {
         printBoard,
         getBoard,
-        placeToken
+        placeToken,
+        checkWin
     };
 }
 
