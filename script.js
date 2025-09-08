@@ -89,15 +89,17 @@ function createUser(name, token) {
     }
 } 
 
-function createGameController() {
+function createGameController(name1 = 'Player One', name2 = 'Player Two') {
     const gameboard = createGameboard();
 
-    const players = [];
+    const players = [
+        createUser(name1, 'O'),
+        createUser(name2, 'X')
+    ];
 
-    let activePlayer = null;
-    let isEnd = true;
+    let activePlayer = players[0];
+    let isEnd = false;
 
-    // Control start and end of the game
     const startGame = () => {
         gameboard.clearBoard();
         activePlayer = players[0];
@@ -105,12 +107,6 @@ function createGameController() {
     };
 
     const endGame = () => isEnd = true;
-
-    const newGame = (name1 = 'Player One', name2 = 'Player Two') => {
-        players.splice(0, 2, createUser(name1, 'O'), createUser(name2, 'X'));
-        startGame();
-    };
-
 
     const getBoard = () => gameboard;
 
@@ -150,7 +146,6 @@ function createGameController() {
 
     return {
         startGame,
-        newGame,
         getBoard,
         getActivePlayer,
         playRound,
