@@ -46,11 +46,14 @@ function createGameboard() {
         return false;
     };
 
+    const clearBoard = () => board.forEach(row => row.forEach(cell => cell.addToken('')));
+
     return {
         printBoard,
         getBoard,
         placeToken,
-        checkWin
+        checkWin,
+        clearBoard,
     };
 }
 
@@ -86,16 +89,28 @@ function createUser(name, token) {
     }
 } 
 
-function createGameController(name1 = 'Player One', name2 = 'Player Two') {
+function createGameController() {
     const gameboard = createGameboard();
 
-    const players = [
-        createUser(name1, 'O'),
-        createUser(name2, 'X')
-    ];
+    const players = [];
 
-    let activePlayer = players[0];
-    let isEnd = false;
+    let activePlayer = null;
+    let isEnd = true;
+
+    // Control start and end of the game
+    const startGame = () => {
+        gameboard.clearBoard();
+        activePlayer = player[0];
+        isEnd = false;
+    };
+
+    const endGame = () => isEnd = true;
+
+    const newGame = (name1 = 'Player One', name2 = 'Player Two') => {
+        players.splice(0, 2, createUser(name1, 'O'), createUser(name2, 'X'));
+        startGame();
+    };
+
 
     const getBoard = () => gameboard;
 
@@ -105,17 +120,12 @@ function createGameController(name1 = 'Player One', name2 = 'Player Two') {
 
     const getActivePlayer = () => activePlayer;
 
-    const startGame = () => {
-        gameboard.forEach(row => row.forEach(cell => cell.addToken('')));
-        isEnd = false;
-    };
-    const endGame = () => isEnd = true;
-
     const getNewRound = () => {
         gameboard.printBoard();
         switchPlayerTurn();
         console.log(`${activePlayer.getName()}'s turn.`)
     };
+
 
     const playRound = (row, column) => {
         if (isEnd) {
@@ -138,9 +148,10 @@ function createGameController(name1 = 'Player One', name2 = 'Player Two') {
     };
 
     return {
+        startGame,
+        newGame,
         getBoard,
         getActivePlayer,
-        startGame,
         playRound,
     };
 }
