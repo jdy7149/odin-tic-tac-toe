@@ -100,7 +100,7 @@ function createGameController() {
     // Control start and end of the game
     const startGame = () => {
         gameboard.clearBoard();
-        activePlayer = player[0];
+        activePlayer = players[0];
         isEnd = false;
     };
 
@@ -140,6 +140,7 @@ function createGameController() {
         if (gameboard.checkWin(row, column, activePlayer.getToken())) {
             console.log(`${activePlayer.getName()} wins!`);
             activePlayer.incrementScore();
+            console.log(`${players[0].getScore()} : ${players[1].getScore()}`);
             endGame();
             return;
         }
