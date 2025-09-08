@@ -95,6 +95,7 @@ function createGameController(name1 = 'Player One', name2 = 'Player Two') {
     ];
 
     let activePlayer = players[0];
+    let isEnd = false;
 
     const getBoard = () => gameboard;
 
@@ -104,6 +105,12 @@ function createGameController(name1 = 'Player One', name2 = 'Player Two') {
 
     const getActivePlayer = () => activePlayer;
 
+    const startGame = () => {
+        gameboard.forEach(row => row.forEach(cell => cell.addToken('')));
+        isEnd = false;
+    };
+    const endGame = () => isEnd = true;
+
     const getNewRound = () => {
         gameboard.printBoard();
         switchPlayerTurn();
@@ -111,6 +118,11 @@ function createGameController(name1 = 'Player One', name2 = 'Player Two') {
     };
 
     const playRound = (row, column) => {
+        if (isEnd) {
+            console.log('Game is ended. Please restart game.');
+            return;
+        }
+
         if (!gameboard.placeToken(row, column, activePlayer.getToken())) {
             return;
         }
@@ -118,6 +130,7 @@ function createGameController(name1 = 'Player One', name2 = 'Player Two') {
         if (gameboard.checkWin(row, column, activePlayer.getToken())) {
             console.log(`${activePlayer.getName()} wins!`);
             activePlayer.incrementScore();
+            endGame();
             return;
         }
             
@@ -127,7 +140,7 @@ function createGameController(name1 = 'Player One', name2 = 'Player Two') {
     return {
         getBoard,
         getActivePlayer,
-        getNewRound,
+        startGame,
         playRound,
     };
 }
