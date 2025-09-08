@@ -27,7 +27,7 @@ function createGameboard() {
 
         board[row][column].addToken(token);
         return true;
-    }
+    };
 
     const checkWin = (row, column, token) => {
         const checkHorizontal = board[row].every(cell => cell.getValue() === token);
@@ -55,7 +55,7 @@ function createGameboard() {
 }
 
 function createCell() {
-    let value = null;
+    let value = '';
 
     const addToken = (token) => value = token;
 
@@ -99,26 +99,37 @@ function createGameController(name1 = 'Player One', name2 = 'Player Two') {
     const getBoard = () => gameboard;
 
     const switchPlayerTurn = () => {
-        activePlayer = players[0] ? players[1] : players[0];
-    }
+        activePlayer = activePlayer === players[0] ? players[1] : players[0];
+    };
 
     const getActivePlayer = () => activePlayer;
 
-    const getNewRoundText = () => {
+    const getNewRound = () => {
         gameboard.printBoard();
-        return `${activePlayer.name}'s turn.`;
+        switchPlayerTurn();
+        console.log(`${activePlayer.getName()}'s turn.`)
     };
 
     const playRound = (row, column) => {
-        gameboard.placeToken(row, column, activePlayer.getToken());
+        if (!gameboard.placeToken(row, column, activePlayer.getToken())) {
+            return;
+        }
 
-
+        if (gameboard.checkWin(row, column, activePlayer.getToken())) {
+            console.log(`${activePlayer.getName()} wins!`);
+            activePlayer.incrementScore();
+            return;
+        }
+            
+        getNewRound();
     };
 
     return {
         getBoard,
-        switchPlayerTurn,
         getActivePlayer,
-        getNewRoundText
+        getNewRound,
+        playRound,
     };
 }
+
+const controller = createGameController();
