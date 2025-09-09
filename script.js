@@ -46,6 +46,8 @@ function createGameboard() {
         return false;
     };
 
+    const checkDraw = () => board.every(row => row.every(cell => cell.getValue()));
+
     const clearBoard = () => board.forEach(row => row.forEach(cell => cell.addToken('')));
 
     return {
@@ -53,6 +55,7 @@ function createGameboard() {
         getBoard,
         placeToken,
         checkWin,
+        checkDraw,
         clearBoard,
     };
 }
@@ -136,6 +139,13 @@ function createGameController(name1 = 'Player One', name2 = 'Player Two') {
         if (gameboard.checkWin(row, column, activePlayer.getToken())) {
             console.log(`${activePlayer.getName()} wins!`);
             activePlayer.incrementScore();
+            console.log(`${players[0].getScore()} : ${players[1].getScore()}`);
+            endGame();
+            return;
+        }
+
+        if (gameboard.checkDraw()) {
+            console.log('Draw!');
             console.log(`${players[0].getScore()} : ${players[1].getScore()}`);
             endGame();
             return;
