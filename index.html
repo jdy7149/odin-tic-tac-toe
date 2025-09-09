@@ -14,13 +14,26 @@
 <body>
     <div class="container">
         <div class="header">Tic Tac Toe</div>
-        <div class="content"></div>
-        <dialog class="modal">
-            <form>
-                <input type="text" name="player1" id="player1">
-                <input type="text" name="player2" id="player2">
+        <div class="content">
+            <div class="buttons">
+                <button type="button" id="openModal">New Game</button>
+                <button type="button" id="reset">Reset</button>
+            </div>
+            <div class="players">
+                <p class="player1"></p>
+                <p class="player2"></p>
+            </div>
+            <div class="result"></div>
+            <div class="board">
+            </div>
+        </div>
+
+        <dialog id="modal">
+            <form method="dialog">
+                <input type="text" name="player1" id="player1" placeholder="Player1 Name" required>
+                <input type="text" name="player2" id="player2" placeholder="Player2 Name" required>
                 <button>Start</button>
-                <button >Close</button>
+                <button id="closeModal" type="button">Close</button>
             </form>
         </dialog>
     </div>

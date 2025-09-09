@@ -163,3 +163,24 @@ function createGameController(name1 = 'Player One', name2 = 'Player Two') {
 }
 
 const controller = createGameController();
+
+function createDisplayController() {
+    const game = createGameController();
+    const resultDiv = document.querySelector('.result');
+    const player1Div = document.querySelector('.player1');
+    const player2Div = document.querySelector('.player2');
+    const boardDiv = document.querySelector('.board');
+    const modal = document.querySelector('#modal');
+
+    const updateDisplay = () => {
+        
+    };
+}
+
+document.querySelector('#openModal').addEventListener('click', () => {
+    document.querySelector('#modal').showModal();
+});
+
+document.querySelector('#closeModal').addEventListener('click', () => {
+    document.querySelector('#modal').close();
+});
