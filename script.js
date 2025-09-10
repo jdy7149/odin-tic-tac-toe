@@ -19,7 +19,6 @@ function createGameboard() {
         }
         
         if (board[row][column].getValue()) {
-            console.log('Already placed.');
             return false;
         }
 
@@ -110,7 +109,6 @@ function createGameController(name1 = 'Player One', name2 = 'Player Two') {
     const getActivePlayer = () => activePlayer;
 
     const getNewRound = () => {
-        gameboard.printBoard();
         switchPlayerTurn();
         return `${activePlayer.getName()} (${activePlayer.getToken()})'s turn.`;
     };
