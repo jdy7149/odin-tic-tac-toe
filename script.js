@@ -74,22 +74,14 @@ function createCell() {
 }
 
 function createUser(name, token) {
-    let score = 0;
-
-    const incrementScore = () => ++score;
-
-    const getScore = () => score;
-
     const getName = () => name;
 
     const getToken = () => token;
 
     return {
-        incrementScore,
-        getScore,
         getName,
         getToken
-    }
+    };
 } 
 
 // Controller for game
@@ -137,7 +129,6 @@ function createGameController(name1 = 'Player One', name2 = 'Player Two') {
         }
 
         if (gameboard.checkWin(row, column, activePlayer.getToken())) {
-            activePlayer.incrementScore();
             endGame();
             return `${activePlayer.getName()} (${activePlayer.getToken()}) wins!`;
         }
@@ -159,7 +150,7 @@ function createGameController(name1 = 'Player One', name2 = 'Player Two') {
 }
 
 // Controller for display
-function createDisplayController() {
+(function createDisplayController() {
     let game = null;
     const resultDiv = document.querySelector('.result');
     const playersPs = document.querySelectorAll('.players > p');
@@ -210,7 +201,11 @@ function createDisplayController() {
     });
 
     // Event for modal
-    modal.querySelector('form').addEventListener('submit', (e) => {
+    window.addEventListener('DOMContentLoaded', () => {
+        modal.showModal();
+    });
+
+    modal.querySelector('form').addEventListener('submit', e => {
         e.preventDefault();
         const player1 = modal.querySelector('#player1').value;
         const player2 = modal.querySelector('#player2').value;
@@ -230,7 +225,5 @@ function createDisplayController() {
     });
 
     modal.addEventListener('close', () => modal.querySelector('form').reset());
-}
-
-createDisplayController();
+})();
 
