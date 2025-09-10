@@ -76,7 +76,7 @@ function createCell() {
 function createUser(name, token) {
     let score = 0;
 
-    const incrementScore = () => score++;
+    const incrementScore = () => ++score;
 
     const getScore = () => score;
 
@@ -92,6 +92,7 @@ function createUser(name, token) {
     }
 } 
 
+// Controller for game
 function createGameController(name1 = 'Player One', name2 = 'Player Two') {
     const gameboard = createGameboard();
 
@@ -113,6 +114,8 @@ function createGameController(name1 = 'Player One', name2 = 'Player Two') {
 
     const getBoard = () => gameboard;
 
+    const getPlayers = () => players;
+
     const switchPlayerTurn = () => {
         activePlayer = activePlayer === players[0] ? players[1] : players[0];
     };
@@ -122,50 +125,45 @@ function createGameController(name1 = 'Player One', name2 = 'Player Two') {
     const getNewRound = () => {
         gameboard.printBoard();
         switchPlayerTurn();
-        console.log(`${activePlayer.getName()}'s turn.`)
+        return `${activePlayer.getName()}'s turn.`;
     };
 
 
     const playRound = (row, column) => {
         if (isEnd) {
-            console.log('Game is ended. Please restart game.');
-            return;
+            return 'Game is ended. Please restart game.';
         }
 
         if (!gameboard.placeToken(row, column, activePlayer.getToken())) {
-            return;
+            return 'Cannot place.';
         }
 
         if (gameboard.checkWin(row, column, activePlayer.getToken())) {
-            console.log(`${activePlayer.getName()} wins!`);
             activePlayer.incrementScore();
-            console.log(`${players[0].getScore()} : ${players[1].getScore()}`);
             endGame();
-            return;
+            return `${activePlayer.getName()} wins!`;
         }
 
         if (gameboard.checkDraw()) {
-            console.log('Draw!');
-            console.log(`${players[0].getScore()} : ${players[1].getScore()}`);
             endGame();
-            return;
+            return 'Draw!';
         }
             
-        getNewRound();
+        return getNewRound();
     };
 
     return {
         startGame,
         getBoard,
+        getPlayers,
         getActivePlayer,
         playRound,
     };
 }
 
-const controller = createGameController();
-
+// Controller for display
 function createDisplayController() {
-    const game = createGameController();
+    let game = null;
     const resultDiv = document.querySelector('.result');
     const player1Div = document.querySelector('.player1');
     const player2Div = document.querySelector('.player2');
@@ -173,14 +171,59 @@ function createDisplayController() {
     const modal = document.querySelector('#modal');
 
     const updateDisplay = () => {
-        
+        // Clear board
+        while (lastChild = boardDiv.lastElementChild) {
+            boardDiv.removeChild(lastChild);
+        }
+
+        // Render board
+        game?.getBoard().getBoard().forEach((row, i) => {
+            row.forEach((cell, j) => {
+                const cellBtn = document.createElement('button');
+                cellBtn.type = 'button';
+                cellBtn.textContent = cell.getValue();
+                cellBtn.classList.add('cell');
+                cellBtn.dataset.row = i;
+                cellBtn.dataset.column = j;
+                boardDiv.appendChild(cellBtn);
+            });
+        });
+
+        player1Div.textContent = game?.getPlayers()[0].getName();
+        player2Div.textContent = game?.getPlayers()[1].getName();
+
+        boardDiv.querySelectorAll('.cell')?.forEach(btn => btn.addEventListener('click', evt => {
+            const clickedCell = evt.target;
+
+            const result = game?.playRound(+clickedCell.dataset.row, +clickedCell.dataset.column);
+            updateDisplay();
+            resultDiv.textContent = result;
+        }));
     };
+
+
+
+    // Event for modal
+    modal.querySelector('form').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const player1 = modal.querySelector('#player1').value;
+        const player2 = modal.querySelector('#player2').value;
+        game = createGameController(player1, player2);
+        modal.close();
+        updateDisplay();
+        resultDiv.textContent = '';
+    });
+
+    document.querySelector('#openModal').addEventListener('click', () => {
+        document.querySelector('#modal').showModal();
+    });
+
+    document.querySelector('#closeModal').addEventListener('click', () => {
+        document.querySelector('#modal').close();
+    });
+
+    modal.addEventListener('close', () => modal.querySelector('form').reset());
 }
 
-document.querySelector('#openModal').addEventListener('click', () => {
-    document.querySelector('#modal').showModal();
-});
+createDisplayController();
 
-document.querySelector('#closeModal').addEventListener('click', () => {
-    document.querySelector('#modal').close();
-});
