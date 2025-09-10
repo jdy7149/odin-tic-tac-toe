@@ -1,61 +1,3 @@
-function createGameboard() {
-    const rows = 3;
-    const columns = 3;
-    const board = [];
-
-    for (let i = 0; i < rows; i++) {
-        board.push([]);
-        for (let j = 0; j < columns; j++) {
-            board[i].push(createCell());
-        }
-    }
-
-    const getBoard = () => board;
-
-    const placeToken = (row, column, token) => {
-        if (row < 0 || row >= board.length || column < 0 || column >= board[0].length) {
-            console.log('Invalid position');
-            return false;
-        }
-        
-        if (board[row][column].getValue()) {
-            return false;
-        }
-
-        board[row][column].addToken(token);
-        return true;
-    };
-
-    const checkWin = (row, column, token) => {
-        const checkHorizontal = board[row].every(cell => cell.getValue() === token);
-        if (checkHorizontal)
-            return true;
-
-        const checkVertical = board.every(r => r[column].getValue() === token);
-        if (checkVertical)
-            return true;
-        
-        const checkDiagonal = board.every((r, i) => r[i].getValue() === token) || 
-            board.every((r, i) => r[r.length - 1 - i].getValue() === token);
-        if (checkDiagonal)
-             return true;
-
-        return false;
-    };
-
-    const checkDraw = () => board.every(row => row.every(cell => cell.getValue()));
-
-    const clearBoard = () => board.forEach(row => row.forEach(cell => cell.addToken('')));
-
-    return {
-        getBoard,
-        placeToken,
-        checkWin,
-        checkDraw,
-        clearBoard,
-    };
-}
-
 function createCell() {
     let value = '';
 
@@ -82,7 +24,63 @@ function createUser(name, token) {
 
 // Controller for game
 function createGameController(name1 = 'Player One', name2 = 'Player Two') {
-    const gameboard = createGameboard();
+    const gameboard = (function () {
+        const rows = 3;
+        const columns = 3;
+        const board = [];
+
+        for (let i = 0; i < rows; i++) {
+            board.push([]);
+            for (let j = 0; j < columns; j++) {
+                board[i].push(createCell());
+            }
+        }
+
+        const getBoard = () => board;
+
+        const placeToken = (row, column, token) => {
+            if (row < 0 || row >= board.length || column < 0 || column >= board[0].length) {
+                console.log('Invalid position');
+                return false;
+            }
+            
+            if (board[row][column].getValue()) {
+                return false;
+            }
+
+            board[row][column].addToken(token);
+            return true;
+        };
+
+        const checkWin = (row, column, token) => {
+            const checkHorizontal = board[row].every(cell => cell.getValue() === token);
+            if (checkHorizontal)
+                return true;
+
+            const checkVertical = board.every(r => r[column].getValue() === token);
+            if (checkVertical)
+                return true;
+            
+            const checkDiagonal = board.every((r, i) => r[i].getValue() === token) || 
+                board.every((r, i) => r[r.length - 1 - i].getValue() === token);
+            if (checkDiagonal)
+                return true;
+
+            return false;
+        };
+
+        const checkDraw = () => board.every(row => row.every(cell => cell.getValue()));
+
+        const clearBoard = () => board.forEach(row => row.forEach(cell => cell.addToken('')));
+
+        return {
+            getBoard,
+            placeToken,
+            checkWin,
+            checkDraw,
+            clearBoard,
+        };
+    })();
 
     const players = [
         createUser(name1, 'O'),
