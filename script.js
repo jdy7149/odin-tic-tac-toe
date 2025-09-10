@@ -125,7 +125,7 @@ function createGameController(name1 = 'Player One', name2 = 'Player Two') {
 
         if (gameboard.checkWin(row, column, activePlayer.getToken())) {
             endGame();
-            return `${activePlayer.getName()} (${activePlayer.getToken()}) wins!`;
+            return `The winner is ${activePlayer.getName()} (${activePlayer.getToken()}) !`;
         }
 
         if (gameboard.checkDraw()) {

@@ -8,6 +8,8 @@
     --button-red-hover: hsl(4, 84%, 50%);
     --input-border-clr: #E5E7EB;
     --cell-border-clr: #E2E8E0;
+    --cell-border-clr-hover: #888;
+    --cell-bg-clr-hover: #f0f0f0;
 }
 
 .container {
@@ -96,10 +98,10 @@
 }
 
 .cell:hover {
-    background-color: #f0f0f0;        
+    background-color: var(--cell-bg-clr-hover);        
     transform: translateY(-2px);      
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); 
-    border-color: #888;               
+    border-color: var(--cell-border-clr-hover);               
 }
 
 #modal {
