@@ -153,6 +153,10 @@ function createGameController(name1 = 'Player One', name2 = 'Player Two') {
     const updateResult = (result) => resultDiv.textContent = result;
 
     const updatePlayers = (name1, name2) => {
+        while (lastChild = playersDiv.lastElementChild){
+            playersDiv.removeChild(lastChild);
+        }
+
         [name1, name2].forEach(name => {
             const nameP = document.createElement('p');
             nameP.textContent = name;
