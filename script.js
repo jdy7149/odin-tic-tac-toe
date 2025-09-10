@@ -10,8 +10,6 @@ function createGameboard() {
         }
     }
 
-    const printBoard = () => console.log(board.map(row => row.map(cell => cell.getValue())));
-
     const getBoard = () => board;
 
     const placeToken = (row, column, token) => {
@@ -51,7 +49,6 @@ function createGameboard() {
     const clearBoard = () => board.forEach(row => row.forEach(cell => cell.addToken('')));
 
     return {
-        printBoard,
         getBoard,
         placeToken,
         checkWin,
