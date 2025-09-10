@@ -1,0 +1,143 @@
+:root {
+    --font-white: white;
+    --button-blue: hsl(201, 79%, 46%);
+    --button-blue-hover: hsl(201, 79%, 36%);
+    --button-green: hsl(152, 55%, 45%);
+    --button-green-hover: hsl(152, 55%, 38%);
+    --button-red: hsl(4, 84%, 60%);
+    --button-red-hover: hsl(4, 84%, 50%);
+    --input-border-clr: #E5E7EB;
+    --cell-border-clr: #E2E8E0;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 4rem;
+}
+
+.content {
+    padding-top: 24px;
+    padding-bottom: 36px;
+    background-color: #f5f7fa;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.buttons {
+    display: flex;
+    justify-content: center;
+    gap: 48px;
+}
+
+.buttons > button {
+    width: 180px;
+    padding: 10px 36px;
+    border: none;
+    border-radius: 16px;
+    color: var(--font-white);
+    font-size: 1.2rem;
+}
+
+#openModal {
+    background-color: var(--button-green);
+}
+
+#openModal:hover {
+    background-color: var(--button-green-hover);
+}
+
+#reset {
+    background-color: var(--button-blue);
+}
+
+#reset:hover {
+    background-color: var(--button-blue-hover);
+}
+
+.players {
+    display: flex;
+    justify-content: space-around;
+    font-size: 1.5rem;
+}
+
+.result {
+    font-size: 1.5rem;
+    align-self: center;
+}
+
+.board {
+    align-self: center;
+    width: 400px;
+    aspect-ratio: 1 / 1;
+    display: grid;
+    grid-template-rows: repeat(3, 1fr);
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.cell {
+    border: 1px solid var(--cell-border-clr);
+    border-radius: 8px;
+    font-size: 5rem;
+    background-color: white;
+    cursor: pointer; 
+    transition: background-color 0.2s ease, 
+                transform 0.15s ease, 
+                box-shadow 0.2s ease;
+}
+
+.cell:hover {
+    background-color: #f0f0f0;        
+    transform: translateY(-2px);      
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); 
+    border-color: #888;               
+}
+
+#modal {
+    border: none;
+    border-radius: 16px;
+    padding: 24px;
+}
+
+#modal form {
+    display: flex;
+    gap: 16px;
+}
+
+#modal input {
+    border: 1px solid var(--input-border-clr);
+    border-radius: 8px;
+    padding: 8px;
+}
+
+#modal button {
+    border-radius: 16px;
+    padding: 8px 16px;
+    color: var(--font-white);
+    border: none;
+}
+
+#start {
+    background-color: var(--button-green);
+}
+
+#start:hover {
+    background-color: var(--button-green-hover);
+}
+
+#closeModal {
+    background-color: var(--button-red);
+}
+
+#closeModal {
+    background-color: var(--button-red-hover);
+}

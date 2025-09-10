@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Odin Tic Tac Toe</title>
+    <title>Tic-Tac-Toe</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Gluten:wght@100..900&display=swap" rel="stylesheet">
@@ -13,7 +13,7 @@
 </head>
 <body>
     <div class="container">
-        <div class="header">Tic Tac Toe</div>
+        <div class="header">Tic-Tac-Toe</div>
         <div class="content">
             <div class="buttons">
                 <button type="button" id="openModal">New Game</button>
@@ -27,15 +27,15 @@
             <div class="board">
             </div>
         </div>
-
-        <dialog id="modal">
-            <form method="dialog">
-                <input type="text" name="player1" id="player1" placeholder="Player1 Name" required>
-                <input type="text" name="player2" id="player2" placeholder="Player2 Name" required>
-                <button>Start</button>
-                <button id="closeModal" type="button">Close</button>
-            </form>
-        </dialog>
     </div>
+
+    <dialog id="modal">
+        <form method="dialog">
+            <input type="text" name="player1" id="player1" placeholder="Player1 Name" required>
+            <input type="text" name="player2" id="player2" placeholder="Player2 Name" required>
+            <button id="start">Start</button>
+            <button id="closeModal" type="button">Close</button>
+        </form>
+    </dialog>
 </body>
 </html>

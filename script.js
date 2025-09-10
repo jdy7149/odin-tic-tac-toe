@@ -123,23 +123,23 @@ function createGameController(name1 = 'Player One', name2 = 'Player Two') {
     const getNewRound = () => {
         gameboard.printBoard();
         switchPlayerTurn();
-        return `${activePlayer.getName()}'s turn.`;
+        return `${activePlayer.getName()} (${activePlayer.getToken()})'s turn.`;
     };
 
 
     const playRound = (row, column) => {
         if (isEnd) {
-            return 'Game is ended. Please restart game.';
+            return 'Game is ended. Please reset game.';
         }
 
         if (!gameboard.placeToken(row, column, activePlayer.getToken())) {
-            return 'Cannot place.';
+            return 'There is a token already placed.';
         }
 
         if (gameboard.checkWin(row, column, activePlayer.getToken())) {
             activePlayer.incrementScore();
             endGame();
-            return `${activePlayer.getName()} wins!`;
+            return `${activePlayer.getName()} (${activePlayer.getToken()}) wins!`;
         }
 
         if (gameboard.checkDraw()) {
@@ -215,7 +215,7 @@ function createDisplayController() {
         const player1 = modal.querySelector('#player1').value;
         const player2 = modal.querySelector('#player2').value;
         game = createGameController(player1, player2);
-        updatePlayers(player1, player2);
+        updatePlayers(`${player1} (O) : 0`, `${player2} (X) : 0`);
         modal.close();
         updateBoard();
         updateResult('');
