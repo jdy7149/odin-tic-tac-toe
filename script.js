@@ -148,15 +148,17 @@ function createGameController(name1 = 'Player One', name2 = 'Player Two') {
 (function createDisplayController() {
     let game = null;
     const resultDiv = document.querySelector('.result');
-    const playersPs = document.querySelectorAll('.players > p');
+    const playersDiv = document.querySelector('.players');
     const boardDiv = document.querySelector('.board');
     const modal = document.querySelector('#modal');
 
     const updateResult = (result) => resultDiv.textContent = result;
 
     const updatePlayers = (name1, name2) => {
-        [name1, name2].forEach((name, i) => {
-            playersPs[i].textContent = name;
+        [name1, name2].forEach(name => {
+            const nameP = document.createElement('p');
+            nameP.textContent = name;
+            playersDiv.appendChild(nameP);
         });
     };
 
@@ -205,7 +207,7 @@ function createGameController(name1 = 'Player One', name2 = 'Player Two') {
         const player1 = modal.querySelector('#player1').value;
         const player2 = modal.querySelector('#player2').value;
         game = createGameController(player1, player2);
-        updatePlayers(`${player1} (O) : 0`, `${player2} (X) : 0`);
+        updatePlayers(`${player1} (O)`, `${player2} (X)`);
         modal.close();
         updateBoard();
         updateResult('');
