@@ -114,8 +114,6 @@ function createGameController(name1 = 'Player One', name2 = 'Player Two') {
 
     const getBoard = () => gameboard;
 
-    const getPlayers = () => players;
-
     const switchPlayerTurn = () => {
         activePlayer = activePlayer === players[0] ? players[1] : players[0];
     };
@@ -155,7 +153,6 @@ function createGameController(name1 = 'Player One', name2 = 'Player Two') {
     return {
         startGame,
         getBoard,
-        getPlayers,
         getActivePlayer,
         playRound,
     };
@@ -165,12 +162,19 @@ function createGameController(name1 = 'Player One', name2 = 'Player Two') {
 function createDisplayController() {
     let game = null;
     const resultDiv = document.querySelector('.result');
-    const player1Div = document.querySelector('.player1');
-    const player2Div = document.querySelector('.player2');
+    const playersPs = document.querySelectorAll('.players > p');
     const boardDiv = document.querySelector('.board');
     const modal = document.querySelector('#modal');
 
-    const updateDisplay = () => {
+    const updateResult = (result) => resultDiv.textContent = result;
+
+    const updatePlayers = (name1, name2) => {
+        [name1, name2].forEach((name, i) => {
+            playersPs[i].textContent = name;
+        });
+    };
+
+    const updateBoard = () => {
         // Clear board
         while (lastChild = boardDiv.lastElementChild) {
             boardDiv.removeChild(lastChild);
@@ -188,20 +192,22 @@ function createDisplayController() {
                 boardDiv.appendChild(cellBtn);
             });
         });
-
-        player1Div.textContent = game?.getPlayers()[0].getName();
-        player2Div.textContent = game?.getPlayers()[1].getName();
-
+        
+        // Add event to cells
         boardDiv.querySelectorAll('.cell')?.forEach(btn => btn.addEventListener('click', evt => {
             const clickedCell = evt.target;
 
             const result = game?.playRound(+clickedCell.dataset.row, +clickedCell.dataset.column);
-            updateDisplay();
-            resultDiv.textContent = result;
+            updateBoard();
+            updateResult(result);
         }));
     };
 
-
+    document.querySelector('#reset').addEventListener('click', () => {
+        game.startGame();
+        updateResult('');
+        updateBoard();
+    });
 
     // Event for modal
     modal.querySelector('form').addEventListener('submit', (e) => {
@@ -209,9 +215,10 @@ function createDisplayController() {
         const player1 = modal.querySelector('#player1').value;
         const player2 = modal.querySelector('#player2').value;
         game = createGameController(player1, player2);
+        updatePlayers(player1, player2);
         modal.close();
-        updateDisplay();
-        resultDiv.textContent = '';
+        updateBoard();
+        updateResult('');
     });
 
     document.querySelector('#openModal').addEventListener('click', () => {
